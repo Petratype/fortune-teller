@@ -1,0 +1,51 @@
+body {
+  font-family: 'Cinzel', serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: black;
+  overflow: hidden;
+  color: #fff;
+  position: relative;
+}
+
+.container {
+  text-align: center;
+  z-index: 1;
+  position: relative;
+  max-width: 500px;
+}
+
+button {
+  background: transparent;
+  border: 2px solid #9c27b0;
+  color: #9c27b0;
+  padding: 12px 24px;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  color: #fff;
+  background: #9c27b0;
+  box-shadow: 0 0 20px #9c27b0, 0 0 40px #9c27b0;
+}
+
+#fortune {
+  margin-top: 30px;
+  font-size: 1.5rem;
+  font-style: italic;
+  opacity: 0;
+  transition: opacity 1s;
+  text-shadow: 
+    0 0 10px #9c27b0, 
+    0 0 20px #9c27b0, 
+    0 0 30px #e91e63;
+}
