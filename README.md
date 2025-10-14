@@ -5,7 +5,7 @@ A tiny, simple, playful web app that sorts short fortunes (some mystical, some s
 Built with plain HTML, CSS and JavaScript. Wanted to practice DOM methods and small UI effects.
 
 ## How to run locally
-Open ---URL---
+Open https://petratype.github.io/fortune-teller
 
 ## Features
 - Typing animation for each fortune.
