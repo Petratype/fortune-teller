@@ -251,13 +251,29 @@ document.querySelectorAll(".lang-switcher button").forEach((b) => {
   b.classList.toggle("active", b.dataset.lang === currentLang);
 });
 
+// --- Sound setup ---
+const sound = document.getElementById("button-sound");
+sound.volume = 0.4;
+sound.preload = "auto";
+
+// --- Force browser to decode/play silently once ---
+window.addEventListener("load", () => {
+  sound.play().then(() => sound.pause()).catch(() => {});
+});
+
 // --- Reveal Fortune ---
 fortuneBtn.addEventListener("click", () => {
+  // Play button sound instantly
+  sound.currentTime = 0;
+  sound.play().catch(() => setTimeout(() => sound.play(), 50));
+
+  // Pick and show a random fortune
   const langFortunes = fortunes[currentLang];
   const randomIndex = Math.floor(Math.random() * langFortunes.length);
   const selectedFortune = langFortunes[randomIndex];
   typeFortune(selectedFortune);
 });
+
 
 // --- Typing Animation ---
 function typeFortune(text) {
@@ -304,4 +320,48 @@ document.querySelectorAll(".lang-switcher button").forEach((btn) => {
       if (index > -1) typeFortune(fortunes[currentLang][index]);
     }
   });
+
+// --- Background Music with fade ---
+const musicBtn = document.getElementById("music-btn");
+const music = new Audio("assets/fortune-song.mp3");
+music.loop = true;
+
+let musicPlaying = false;
+let fadeInterval = null;
+const fadeStep = 0.02; // volume increment per step
+const fadeIntervalTime = 50; // ms per step
+
+music.volume = 0; // start muted
+
+musicBtn.addEventListener("click", () => {
+  if (!musicPlaying) {
+    music.play().catch(() => {});
+    musicBtn.classList.add("active");
+    fadeVolume(true);
+    musicPlaying = true;
+  } else {
+    fadeVolume(false);
+    musicBtn.classList.remove("active");
+    musicPlaying = false;
+  }
+});
+
+function fadeVolume(fadeIn) {
+  if (fadeInterval) clearInterval(fadeInterval);
+  fadeInterval = setInterval(() => {
+    if (fadeIn) {
+      music.volume = Math.min(music.volume + fadeStep, 0.3); // fade in to 0.3
+      if (music.volume >= 0.3) clearInterval(fadeInterval);
+    } else {
+      music.volume = Math.max(music.volume - fadeStep, 0); // fade out to 0
+      if (music.volume <= 0) {
+        clearInterval(fadeInterval);
+        music.pause();
+      }
+    }
+  }, fadeIntervalTime);
+}
+
+
+
 });
