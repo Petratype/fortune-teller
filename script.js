@@ -1,3 +1,4 @@
+/* PAST FORTUNES
 const fortunes = [
   "The shadow you chase will reveal its own light.",
   "Whispers in silence carry the answer you seek.",
@@ -31,13 +32,59 @@ const fortunes = [
   "Your online order will arrive faster than expected.",
   "Today you master the art of not tripping over anything."
 ];
+*/
 
-document.getElementById("fortune-btn").addEventListener("click", () => {
-  const randomIndex = Math.floor(Math.random() * fortunes.length);
-  const selectedFortune = fortunes[randomIndex];
+// --- Multilanguage Fortunes ---
+const fortunes = {
+  EN: [
+    "The shadow you chase will reveal its own light.",
+    "Whispers in silence carry the answer you seek.",
+    "Your Wi-Fi will connect on the first try today.",
+    "You will finally remember why you entered that room.",
+  ],
+  ES: [
+    "La sombra que tanto perseguís va a revelar su propia luz.",
+    "Los susurros del silencio traen la respuesta que buscás.",
+    "Tu Wi-Fi se conectará al primer intento hoy.",
+    "Por fin te vas a acordar de por qué entraste a esa habitación.",
+  ],
+  NO: [
+    "Skyggen du jager vil avsløre sitt eget lys.",
+    "Hvisking i stillhet bærer svaret du søker.",
+    "Din Wi-Fi vil koble til på første forsøk i dag.",
+    "Du vil endelig huske hvorfor du gikk inn i det rommet.",
+  ]
+};
+
+// --- Button text by language ---
+const buttonLabels = {
+  EN: "Reveal Fortune",
+  ES: "Revelá tu destino",
+  NO: "Avslør skjebnen"
+};
+// Load saved language if available
+const savedLang = localStorage.getItem("fortuneLang");
+if (savedLang && fortunes[savedLang]) {
+  currentLang = savedLang;
+  fortuneBtn.textContent = buttonLabels[currentLang];
+
+  // Update the active button
+  document.querySelectorAll(".lang-switcher button").forEach((b) => {
+    b.classList.toggle("active", b.dataset.lang === currentLang);
+  });
+}
+
+
+// --- Reveal Fortune ---
+const fortuneBtn = document.getElementById("fortune-btn");
+fortuneBtn.addEventListener("click", () => {
+  const langFortunes = fortunes[currentLang];
+  const randomIndex = Math.floor(Math.random() * langFortunes.length);
+  const selectedFortune = langFortunes[randomIndex];
   typeFortune(selectedFortune);
 });
 
+// --- Typing Animation ---
 function typeFortune(text) {
   const fortuneEl = document.getElementById("fortune");
   fortuneEl.textContent = "";
@@ -50,3 +97,19 @@ function typeFortune(text) {
     if (i >= text.length) clearInterval(interval);
   }, 50);
 }
+
+// --- Language Switching ---
+document.querySelectorAll(".lang-switcher button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".lang-switcher button").forEach((b) =>
+      b.classList.remove("active")
+    );
+    btn.classList.add("active");
+
+    currentLang = btn.dataset.lang;
+    fortuneBtn.textContent = buttonLabels[currentLang];
+
+    // Save language
+    localStorage.setItem("fortuneLang", currentLang);
+  });
+});

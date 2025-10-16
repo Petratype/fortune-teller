@@ -49,3 +49,33 @@ button:hover {
     0 0 20px #9c27b0, 
     0 0 30px #e91e63;
 }
+
+.lang-switcher {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  gap: 8px;
+}
+
+.lang-switcher button {
+  background: transparent;
+  border: 1px solid #9c27b0;
+  color: #9c27b0;
+  font-size: 0.9rem;
+  padding: 5px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.lang-switcher button:hover {
+  background: #9c27b0;
+  color: white;
+  box-shadow: 0 0 10px #9c27b0;
+}
+
+.lang-switcher button.active {
+  background: #9c27b0;
+  color: white;
+}
