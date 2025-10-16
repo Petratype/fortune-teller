@@ -62,21 +62,34 @@ const buttonLabels = {
   ES: "Revelá tu destino",
   NO: "Avslør skjebnen"
 };
-// Load saved language if available
+
+// --- Select elements ---
+const fortuneBtn = document.getElementById("fortune-btn");
+const fortuneEl = document.getElementById("fortune");
+
+// --- Typing control (store interval id so we can clear it) ---
+let typingIntervalId = null;
+
+// --- Set current language (detect or load saved) ---
+let currentLang = "EN";
 const savedLang = localStorage.getItem("fortuneLang");
 if (savedLang && fortunes[savedLang]) {
   currentLang = savedLang;
-  fortuneBtn.textContent = buttonLabels[currentLang];
-
-  // Update the active button
-  document.querySelectorAll(".lang-switcher button").forEach((b) => {
-    b.classList.toggle("active", b.dataset.lang === currentLang);
-  });
+} else {
+  // auto-detect small heuristic (first two letters)
+  const detected = (navigator.language || navigator.userLanguage || "en").slice(0,2).toUpperCase();
+  if (fortunes[detected]) currentLang = detected;
+  // save detected for next time
+  localStorage.setItem("fortuneLang", currentLang);
 }
 
+// --- Update UI for language initially ---
+fortuneBtn.textContent = buttonLabels[currentLang];
+document.querySelectorAll(".lang-switcher button").forEach((b) => {
+  b.classList.toggle("active", b.dataset.lang === currentLang);
+});
 
 // --- Reveal Fortune ---
-const fortuneBtn = document.getElementById("fortune-btn");
 fortuneBtn.addEventListener("click", () => {
   const langFortunes = fortunes[currentLang];
   const randomIndex = Math.floor(Math.random() * langFortunes.length);
@@ -84,32 +97,63 @@ fortuneBtn.addEventListener("click", () => {
   typeFortune(selectedFortune);
 });
 
-// --- Typing Animation ---
+// --- Typing Animation (clears previous interval) ---
 function typeFortune(text) {
-  const fortuneEl = document.getElementById("fortune");
+  // clear previous typing if any
+  if (typingIntervalId) {
+    clearInterval(typingIntervalId);
+    typingIntervalId = null;
+  }
+
   fortuneEl.textContent = "";
   fortuneEl.style.opacity = 1;
 
   let i = 0;
-  const interval = setInterval(() => {
+  typingIntervalId = setInterval(() => {
     fortuneEl.textContent += text.charAt(i);
     i++;
-    if (i >= text.length) clearInterval(interval);
+    if (i >= text.length) {
+      clearInterval(typingIntervalId);
+      typingIntervalId = null;
+    }
   }, 50);
+}
+
+// --- Helper: find index of a fortune across all languages ---
+// returns index (0..n-1) or -1 if not found
+function findFortuneIndex(text) {
+  for (const lang of Object.keys(fortunes)) {
+    const idx = fortunes[lang].indexOf(text);
+    if (idx > -1) return idx;
+  }
+  return -1;
 }
 
 // --- Language Switching ---
 document.querySelectorAll(".lang-switcher button").forEach((btn) => {
   btn.addEventListener("click", () => {
+    // visuals
     document.querySelectorAll(".lang-switcher button").forEach((b) =>
       b.classList.remove("active")
     );
     btn.classList.add("active");
 
+    // set language, update button label and save
     currentLang = btn.dataset.lang;
     fortuneBtn.textContent = buttonLabels[currentLang];
-
-    // Save language
     localStorage.setItem("fortuneLang", currentLang);
+
+    // translate currently displayed fortune immediately (if present)
+    const currentText = fortuneEl.textContent.trim();
+    if (currentText) {
+      const index = findFortuneIndex(currentText);
+      if (index > -1) {
+        const translated = fortunes[currentLang][index];
+        typeFortune(translated);
+      } else {
+        // if current shown fortune isn't in our lists, just clear it
+        // or optionally keep it as-is. Here we keep it.
+      }
+    }
   });
 });
