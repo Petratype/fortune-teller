@@ -19,7 +19,8 @@ body {
   max-width: 500px;
 }
 
-button {
+/* --- Main Button --- */
+#fortune-btn {
   background: transparent;
   border: 2px solid #9c27b0;
   color: #9c27b0;
@@ -32,12 +33,13 @@ button {
   transition: all 0.3s ease;
 }
 
-button:hover {
+#fortune-btn:hover {
   color: #fff;
   background: #9c27b0;
   box-shadow: 0 0 20px #9c27b0, 0 0 40px #9c27b0;
 }
 
+/* --- Fortune Text --- */
 #fortune {
   margin-top: 30px;
   font-size: 1.5rem;
@@ -50,32 +52,80 @@ button:hover {
     0 0 30px #e91e63;
 }
 
+/* --- Language Switcher --- */
 .lang-switcher {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 15px;
+  right: 15px;
   display: flex;
   gap: 8px;
+  z-index: 10;
 }
 
 .lang-switcher button {
-  background: transparent;
-  border: 1px solid #9c27b0;
-  color: #9c27b0;
-  font-size: 0.9rem;
-  padding: 5px 10px;
+  background-color: #555;
+  color: white;
+  border: none;
   border-radius: 8px;
+  padding: 8px 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease;
 }
 
 .lang-switcher button:hover {
-  background: #9c27b0;
-  color: white;
-  box-shadow: 0 0 10px #9c27b0;
+  background-color: #777;
 }
 
 .lang-switcher button.active {
-  background: #9c27b0;
+  background-color: #9c27b0;
   color: white;
+}
+
+/* Centered "Your Fortune" title */
+h1 {
+  margin-top: 100px; /* avoids buttons */
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 36px;
+  color: white;
+}
+
+/* Footer fixed at bottom */
+footer {
+  position: fixed;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: white;
+  opacity: 0.7;
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+  border-bottom: 1px dotted white;
+}
+
+footer a:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+/* --- Responsive tweaks --- */
+@media (max-width: 600px) {
+  #fortune {
+    font-size: 1.2rem;
+  }
+  #fortune-btn {
+    font-size: 1rem;
+    padding: 10px 20px;
+  }
+  .lang-switcher {
+    top: 10px;
+    right: 10px;
+  }
 }
