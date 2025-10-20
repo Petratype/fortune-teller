@@ -337,11 +337,13 @@ musicBtn.addEventListener("click", () => {
   if (!musicPlaying) {
     music.play().catch(() => {}); // play on user interaction
     musicBtn.classList.add("active");
+    musicBtn.classList.remove("muted"); // REMOVE the diagonal line
     fadeVolume(true);
     musicPlaying = true;
   } else {
     fadeVolume(false);
     musicBtn.classList.remove("active");
+    musicBtn.classList.add("muted");    // ADD the diagonal line
     musicPlaying = false;
   }
 });
@@ -361,3 +363,11 @@ function fadeVolume(fadeIn) {
     }
   }, fadeIntervalTime);
 }
+
+// --- Toggle language menu visibility ---
+const langToggle = document.getElementById("lang-toggle");
+const langMenu = document.querySelector(".lang-switcher");
+
+langToggle.addEventListener("click", () => {
+  langMenu.classList.toggle("active");
+});
