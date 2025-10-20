@@ -158,7 +158,6 @@ footer a:hover {
   max-width: 80%;
   background: black;         /* matches page background so the square disappears visually */
   border-radius: 8px;        /* soften corners — remove if you want exact square */
-  box-shadow: 0 0 18px rgba(156,39,176,0.45);
   image-rendering: auto;
   z-index: 2;
 }
