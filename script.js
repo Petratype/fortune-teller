@@ -217,12 +217,12 @@ const buttonLabels = {
 
 // --- Title text by language ---
 const titles = {
-  EN: "🔮 Your Fortune",
-  ES: "🔮 Tu Fortuna",
-  NO: "🔮 Din Skjebne",
-  PT: "🔮 Sua Sorte",
-  DE: "🔮 Dein Schicksal",
-  FR: "🔮 Ta Destinée"
+  EN: "Your Fortune",
+  ES: "Tu Fortuna",
+  NO: "Din Skjebne",
+  PT: "Sua Sorte",
+  DE: "Dein Schicksal",
+  FR: "Ta Destinée"
 };
 
 // --- Select elements ---
@@ -320,22 +320,22 @@ document.querySelectorAll(".lang-switcher button").forEach((btn) => {
       if (index > -1) typeFortune(fortunes[currentLang][index]);
     }
   });
+}); // <-- CLOSE the language-switcher loop here
 
 // --- Background Music with fade ---
 const musicBtn = document.getElementById("music-btn");
 const music = new Audio("assets/fortune-song.mp3");
 music.loop = true;
+music.volume = 0; // start muted
 
 let musicPlaying = false;
 let fadeInterval = null;
 const fadeStep = 0.02; // volume increment per step
 const fadeIntervalTime = 50; // ms per step
 
-music.volume = 0; // start muted
-
 musicBtn.addEventListener("click", () => {
   if (!musicPlaying) {
-    music.play().catch(() => {});
+    music.play().catch(() => {}); // play on user interaction
     musicBtn.classList.add("active");
     fadeVolume(true);
     musicPlaying = true;
@@ -361,7 +361,3 @@ function fadeVolume(fadeIn) {
     }
   }, fadeIntervalTime);
 }
-
-
-
-});
